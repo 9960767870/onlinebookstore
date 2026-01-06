@@ -13,6 +13,7 @@ public class UserDTO {
     private String password;
     private LocalDateTime createdAt;
     private Role role;
+    private Integer roleId;
 
     public UserDTO(int userId, String userName, String email, String password, Role role) {
         this.userId = userId;

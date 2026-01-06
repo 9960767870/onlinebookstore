@@ -41,10 +41,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public AuthRequestResponse login(AuthRequest authRequest) {
         //decript username and password
-        String decodedUserName = jwtUtil.decodeBase64String(authRequest.getUserName());
+       // String decodedUserName = jwtUtil.decodeBase64String(authRequest.getUserName());
         String decodedPassword = jwtUtil.decodeBase64String(authRequest.getPassword());
         Optional<User> byUserNameAndMail = userRepository.
-                findByUserNameAndEmail(decodedUserName, authRequest.getEmail());
+                findByUserNameOrEmail(authRequest.getUserName(), authRequest.getEmail());
         AuthRequestResponse authRequestResponse = new AuthRequestResponse();
          if(bcrypPasswordEncoder.passwordEncoder().matches(decodedPassword,byUserNameAndMail.get().getPassword())){
              authRequestResponse  = getUserFromRequest(byUserNameAndMail.get(),authRequestResponse);
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
                 .findByRoleName(userDTO.getRole().getRoleName())
                 .orElseThrow(() -> new CustomException("Role not found"));
         User byUserNameAndEmail = userRepository
-                .findByUserNameAndEmail(userDTO.getUserName(), userDTO.getEmail())
+                .findByUserNameOrEmail(userDTO.getUserName(), userDTO.getEmail())
                 .orElseThrow(()->new CustomException("User not found"));
         byUserNameAndEmail.setUserName(userDTO.getUserName());
         byUserNameAndEmail.setEmail(userDTO.getEmail());
@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
             String userName = map.get("userName").toString();
             String email = map.get("email").toString();
             String password = map.get("password").toString();
-            Optional<User> byUserNameAndEmail = userRepository.findByUserNameAndEmail(userName, email);
+            Optional<User> byUserNameAndEmail = userRepository.findByUserNameOrEmail(userName, email);
             byUserNameAndEmail.ifPresent(u -> {
                 u.setUserName(userName);
                 u.setEmail(email);
