@@ -26,7 +26,6 @@ public class BookServiceImpl implements BookService {
         return all.stream()
                 .map(bookMapper::toDTO)  // Map one by one
                 .collect(Collectors.toList());
-
     }
 
     @Override
@@ -67,7 +66,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDTO> getCategoryByBook(String category) {
-
         List<Book> byCategory = bookRepository.findByCategory(category);
         return byCategory.stream()
                 .map(bookMapper::toDTO)  // Map one by one

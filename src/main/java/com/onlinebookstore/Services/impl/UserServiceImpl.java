@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private AuthRequestResponse getUserFromRequest(User user,AuthRequestResponse authRequest) {
-        String token = jwtUtil.generateToken(user.getUserName());
+        String token = jwtUtil.generateToken(user);
         authRequest.setUserName(user.getUserName());
         authRequest.setPassword(user.getPassword());
         authRequest.setEmail(user.getEmail());

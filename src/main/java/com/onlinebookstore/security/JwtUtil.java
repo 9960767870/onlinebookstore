@@ -1,5 +1,6 @@
 package com.onlinebookstore.security;
 
+import com.onlinebookstore.entity.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -29,9 +30,10 @@ public class JwtUtil {
     }*/
 
     // Generate JWT token
-    public String generateToken(String username) {
+    public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(user.getUserName())
+                .claim("roles", user.getRole()) // include roles in token
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
